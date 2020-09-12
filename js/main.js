@@ -1,6 +1,7 @@
 {
 const originalText = document.getElementById('original_text');
-const generatorBtn = document.getElementById('generator_btn');
+const invertBtn = document.getElementById('invert_btn');
+const reverseBtn = document.getElementById('reverse_btn');
 const translatedImg = document.getElementById('translated_img');
 const fontWidth = 9;
 const fontHeight = 18;
@@ -26,7 +27,8 @@ const getLen = (str) => {
     return result;
 }
 
-const createImg = async () => {
+const createImg = async (e) => {
+    e.preventDefault();
     const textValue = originalText.value;
     const textLen = getLen(textValue);
     const textWidth = (fontCount < textLen) ? maxWidth : (textLen * fontWidth);
@@ -36,14 +38,24 @@ const createImg = async () => {
     copyText.style.width = textWidth + 'px';
     copyText.style.height = textHeight + 'px';
     copyText.classList.add('copyTextCss');
-    copyText.textContent = textValue;
+    copyText.innerText = textValue;
+
+    if (e.target === invertBtn) {
+      copyText.classList.remove('reverseCss');
+      copyText.classList.add('mirrorCss');
+   } else if(e.target === reverseBtn) {
+    copyText.classList.remove('mirrorCss');
+  copyText.classList.add('reverseCss');
+  }
+
     document.body.appendChild(copyText);
 
     const canvas = await html2canvas(copyText, {scale: 1});
     const imageData = canvas.toDataURL();
     translatedImg.setAttribute('src', imageData);
+    // document.body.removeChild(copyText);
 }
 
-generatorBtn.addEventListener('click', createImg);
-    
+invertBtn.addEventListener('click', createImg);
+reverseBtn.addEventListener('click', createImg);
 }
