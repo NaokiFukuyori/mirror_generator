@@ -7,7 +7,7 @@ const translatedImg = document.getElementById('translated_img');
 const fontWidth = 9;
 const fontHeight = 18;
 const fontCount = 26;
-const maxWidth = 234;
+const maxWidth = 252;
 
 
 // 空白スペース,改行の処理をする
