@@ -2,12 +2,15 @@
 const originalText = document.getElementById('original_text');
 const invertBtn = document.getElementById('invert_btn');
 const reverseBtn = document.getElementById('reverse_btn');
+const downloadBtn = document.getElementById('download');
 const translatedImg = document.getElementById('translated_img');
 const fontWidth = 9;
 const fontHeight = 18;
 const fontCount = 26;
 const maxWidth = 234;
 
+
+// 空白スペース,改行の処理をする
 const getLen = (str) => {
     var result = 0;
     for(var i=0;i<str.length;i++){
@@ -15,7 +18,7 @@ const getLen = (str) => {
       if((chr >= 0x00 && chr < 0x81) ||
          (chr === 0xf8f0) ||
          (chr >= 0xff61 && chr < 0xffa0) ||
-         (chr >= 0xf8f1 && chr < 0xf8f4)){
+         (chr >= 0xf8f1 && chr < 0xf8f4) ){
         //半角文字の場合は1を加算
         result += 1;
       }else{
@@ -49,13 +52,18 @@ const createImg = async (e) => {
   }
 
     document.body.appendChild(copyText);
-
-    const canvas = await html2canvas(copyText, {scale: 1});
+    window.scrollTo(0, 0);
+    const canvas = await html2canvas(copyText, {scale: 3, scrollX: 0, scrollY: -window.scrollY});
     const imageData = canvas.toDataURL();
     translatedImg.setAttribute('src', imageData);
-    // document.body.removeChild(copyText);
+    document.body.removeChild(copyText);
+}
+
+const downloadImg = () => {
+  downloadBtn.href = translatedImg.src
 }
 
 invertBtn.addEventListener('click', createImg);
 reverseBtn.addEventListener('click', createImg);
+downloadBtn.addEventListener('click', downloadImg);
 }
